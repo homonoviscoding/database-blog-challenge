@@ -50,6 +50,7 @@ async function seed() {
             }
         })
         createdUsers.push(createdUser)
+        console.log(createdUsers)
     }
 
     console.log(`${createdUsers.count} users created`, createdUsers);
@@ -65,14 +66,28 @@ async function seed() {
                     content: 'Create the Post model and add the minimum fields listed above, Add any other fields you identified while completing the ERD.',
                     picture: 'mypicture.co.uk',
                     isPublished: true,
-                    userId: createdUser.id 
+                    userId: createdUser.id
                 }
             ]
 
         })
         CreatedPosts.push(post)
+        console.log(CreatedPosts)
     }
     
+    const createdComments = []
+    for (const post of CreatedPosts) {
+
+        const comment = await prisma.comment.createMany({
+            data:{
+                    content: 'Create the Comment model and add the minimum fields listed above',
+                    postId: post.id,
+                    userId: post.userId
+                }
+        })
+        createdComments.push(comment)
+    }
+
 
 
     // Don't edit any of the code below this line
