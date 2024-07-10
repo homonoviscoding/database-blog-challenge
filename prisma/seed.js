@@ -59,30 +59,54 @@ async function seed() {
 
     const CreatedPosts = []
     for (const createdUser of createdUsers) {
-        const post = await prisma.post.createMany({
-            data: [
+        const post1 = await prisma.post.create({
+            data: 
                 {
                     title: 'Instructions',
                     content: 'Create the Post model and add the minimum fields listed above, Add any other fields you identified while completing the ERD.',
                     picture: 'mypicture.co.uk',
                     isPublished: true,
-                    userId: createdUser.id
+                    user: {
+                        connect: {
+                            id: createdUser.id
+                        }
+                    }
                 }
-            ]
-
         })
-        CreatedPosts.push(post)
+        const post2 = await prisma.post.create({
+            data: 
+                {
+                    title: 'Comment',
+                    content: 'Create the Comment model and add the minimum fields listed above.',
+                    picture: 'mypicture.co.uk',
+                    isPublished: true,
+                    user: {
+                        connect: {
+                            id: createdUser.id
+                        }
+                    }
+                }
+        })
+        CreatedPosts.push(post1, post2)
         console.log(CreatedPosts)
     }
     
     const createdComments = []
-    for (const post of CreatedPosts) {
+    for (const post1 of CreatedPosts) {
 
-        const comment = await prisma.comment.createMany({
+        const comment = await prisma.comment.create({
             data:{
                     content: 'Create the Comment model and add the minimum fields listed above',
-                    postId: post.id,
-                    userId: post.userId
+                    post: {
+                        connect: {
+                            id: post1.id
+                        }
+                    },
+                    user: {
+                        connect: {
+                            id: post1.userId
+                        }
+                    }
                 }
         })
         createdComments.push(comment)
