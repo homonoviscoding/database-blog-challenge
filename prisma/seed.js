@@ -50,7 +50,6 @@ async function seed() {
             }
         })
         createdUsers.push(createdUser)
-        console.log(createdUser)
     }
 
     console.log(`${createdUsers.count} users created`, createdUsers);
